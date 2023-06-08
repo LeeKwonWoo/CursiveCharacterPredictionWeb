@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+/*
+.card-container {
+	contain: style layout block-size;
+	width: 50%;
+	transition: all 1s;
+	text-align: left;
+	padding: 20px;
+}
+
+.title {
+	font-size 30px;
+}
+
+@container (max-width: 200px) {
+	.title {
+		font-size: 15px;
+	}
+}
+*/
+
+div {
+	height:100%;
+	
+}
+
+@media screen and (min-width:100px) {
+	.uploadDiv {
+		margin-right: 10%;
+		width: 50%;
+	}
+	
+	.predictedDiv {
+		width: 50%;
+	}
+}
+@media screen and (max-width:100px) {
+	.uploadDiv {
+		margin-right: 10%;
+		width: 50%;
+	}
+	
+	.predictedDiv {
+		width: 50%;
+	}
+}
+
+
+img {
+	max-width: 100%;
+	height: auto;
+}
