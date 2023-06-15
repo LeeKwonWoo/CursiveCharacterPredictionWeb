@@ -9,8 +9,6 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.tensorflow.SavedModelBundle;
 import org.tensorflow.Signature;
 import org.tensorflow.op.Ops;
 import org.tensorflow.op.core.Placeholder;
@@ -32,6 +31,7 @@ import com.cursivecharacter.service.CursiveCharacterService;
 
 @Controller
 public class HomeController {
+	
 	
 	@Autowired
 	private CursiveCharacterService ccService;
@@ -57,7 +57,7 @@ public class HomeController {
 		int labels = labelNames.length;
 		
 		String outputImagePath = "";
-		String modelPath = "c:/Users/jongoan/git/CursiveCharacterPredictionWeb/CursiveCharacterWeb/src/main/webapp/resources/model/densenet_201.h5";
+		String modelPath = "c:/Users/jongoan/Desktop/Cursive_Character_Prediction_using_a_Deep_Learning/Task/densenet201.h5";
 
 		TreeMap<Integer, String> imgTreeMap = new TreeMap<>();
 		int imgCount = 1;
@@ -83,12 +83,10 @@ public class HomeController {
 		}
 		
 		//Data Preprocessing
-		//https://d2.naver.com/helloworld/8344782?refer=%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%8A%A4%EB%9F%BD%EB%8B%A4
-		
-		
+		String preprocessingImg = "c:/Users/jongoan/git/CursiveCharacterPredictionWeb/CursiveCharacterWeb/src/main/webapp/resources/images/savedPreprocessingImg/" + saveName;
 		try {
 			String locCC = save_dir + saveName;
-			
+			System.out.println(locCC);
 			Mat imageCC = Imgcodecs.imread(locCC);
 			Mat imageGrayCC = new Mat();
 			Imgproc.cvtColor(imageCC, imageGrayCC, Imgproc.COLOR_RGB2GRAY);
@@ -97,9 +95,10 @@ public class HomeController {
 			Size sizeCC = new Size(224, 224);
 			Imgproc.resize(imageGrayCC, imageResizeCC, sizeCC);
 			
-			Mat imageBinarizationGrayCC = new Mat();
-			Imgproc.threshold(imageGrayCC, imageBinarizationGrayCC, 0, 255, Imgproc.THRESH_BINARY);
-			Imgcodecs.imwrite("c:/Users/jongoan/git/CursiveCharacterPredictionWeb/CursiveCharacterWeb/src/main/webapp/resources/images/savedPreprocessingImg/"+saveName, imageBinarizationGrayCC);
+			Mat imageBinarizationGrayCC = new Mat(); //40
+			Imgproc.threshold(imageGrayCC, imageBinarizationGrayCC, 0, 255, Imgproc.THRESH_BINARY + Imgproc.THRESH_OTSU);
+			
+			Imgcodecs.imwrite(preprocessingImg, imageBinarizationGrayCC);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -107,7 +106,6 @@ public class HomeController {
 		//Prediction
 		
 //		SavedModelBundle models = SavedModelBundle.load(modelPath, "serve");
-		
 		
 		
 		
