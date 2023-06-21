@@ -1,6 +1,7 @@
 package com.cursivecharacter.configuration;
 
 import org.springframework.context.annotation.Configuration;
+import org.tensorflow.TensorFlow;
 
 @Configuration
 public class LibLoadingConfig {
